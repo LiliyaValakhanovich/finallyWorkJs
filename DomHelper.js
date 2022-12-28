@@ -1,44 +1,109 @@
 class DomHelper {
-  createTitle() {
+  createDate(date) {
+    const newdate=date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear() +' '+date.getHours()+':'+date.getMinutes();
+    return this.createElement({
+      tag: 'div',
+      classList: ['date'],
+      textContent: `${newdate}`,
+    });
+  }
+
+  createTitle(city) {
     return this.createElement({
       tag: 'h2',
       classList: ['city'],
-      textContent: '',
+      textContent: `${city},`
+    });
+  }
+
+  createCountry(country) {
+    return this.createElement({
+      tag: 'h2',
+      classList: ['city'],
+      textContent: `${country}`
+    });
+  }
+
+  createPlaceCountry(children) {
+    return this.createElement({
+      tag: 'div',
+      classList: ['place_conteiner', 'd-flex'],
+      children,
+      childrenAction: 'append',
     });
   }
 
   createImageConteiner(children) {
     return this.createElement({
       tag: 'div',
-      classList: ['image-conteiner'],
+      classList: ['image-conteiner', 'd-flex'],
       children,
       childrenAction: 'append',
     });
   }
 
-  createImage(attributes) {
+  createImage(img) {
     return this.createElement({
       tag: 'img',
       classList: ['image-weather'],
-      attributes,
+      attributes:  [{ prop: 'src', value: img }],
     });
   }
 
-  createDegrees() {
+  createDegrees(temp) {
+    const integerTemp=Math.round(temp);
     return this.createElement({
       tag: 'p',
       classList: ['degrees'],
-      textContent: '', 
+      textContent:`${integerTemp} C`, 
     });
   }
 
-  createDescription() {
+  createTemp(tempLike) {
+    const integer=Math.round(tempLike);
     return this.createElement({
       tag: 'p',
-      classList: ['weather-description'],
-      textContent: '',
+      classList: ['temp_like'],
+      textContent:`По ощущениям: ${integer} C.` 
     });
   }
+
+  createDescr(newDescr) {
+    return this.createElement({
+      tag: 'p',
+      classList: ['descr_weather'],
+      textContent:`${newDescr}.`
+    });
+  }
+
+
+  createDescription(children) {
+    return this.createElement({
+      tag: 'div',
+      classList: ['weather-description', 'd-flex'],
+      children,
+      childrenAction: 'append',
+    });
+  }
+
+  createPressure(pressure) {
+    return this.createElement({
+      tag: 'p',
+      classList: ['pressure'],
+      textContent: `Давление: ${pressure} гПа`,
+    });
+  }
+
+  createParamConteiner(children) {
+    return this.createElement({
+      tag: 'div',
+      classList: ['param_weather'],
+      children,
+      childrenAction: 'append',
+    });
+  }
+
+  
 
   createConteiner(children) {
     return this.createElement({

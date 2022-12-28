@@ -10,14 +10,24 @@ class Controller {
     this.view.show(this.model.todos);
   }
 
-  addTodo(data){
+  addTodo([date, city, country, img, temp, tempLike, newDescr, wind, speedOfWind, humidity, pressure]){
+    console.log('controller', city, country, temp, pressure);
     const todo=this.model.addTodo({
-      city:data.name,
-      image:data.weather.icon,
-      temp:data.main.temp,
-      main:data.weather.main,
-      pressure:data.main.pressure,
-      humidity:data.main.humidity,
+      date,
+      city,
+      country,
+      img,
+      temp,
+      tempLike,
+      newDescr,
+      wind,
+      speedOfWind,
+      humidity,
+      pressure,
     })
+    
+    this.view.addTodo(todo);
   }
+
+  
 }
