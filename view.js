@@ -3,13 +3,15 @@ class View extends EventEmitter{
     super();
     this.helpers=helpers;
 
-    this.conteinerElement=document.querySelector('.conteinerElement');
+    this.weather_current=document.querySelector('.weather_current');
     this.form=document.querySelector('.form');
     this.input=document.querySelector('.form-input');
+    this.weather_list=document.querySelector('.weather_list');
+    this.todo_list=document.querySelector('.todo_list_history');
 
-    this.searchWeather=this.searchWeather.bind(this);
+    this.sendTitle=this.sendTitle.bind(this);
 
-    this.form.addEventListener('submit', this.searchWeather);
+    this.form.addEventListener('submit', this.sendTitle);
   }
 
   show (todos){
@@ -19,9 +21,20 @@ class View extends EventEmitter{
   }
 
   addTodo(todo){
+    console.log('vew', todo);
     const element=this.createElement(todo);
+    const liElement=this.createTodoList(todo);
+    console.log(liElement);
+    this.weather_current.append(element);
+    this.todo_list.append(liElement);
+    return todo;
+  }
 
-    this.conteinerElement.append(element);
+  addList(todo){
+    console.log('viewList', todo);
+    const liItem=this.createLiElement(todo);
+    this.weather_list.append(liItem);
+    return todo;
   }
 
   createElement(todo){
@@ -44,7 +57,27 @@ class View extends EventEmitter{
 
   }
 
-  searchWeather(event){
+  createTodoList(todo){
+    const date=this.helpers.createDate(todo.date);
+    const title=this.helpers.createTitle(todo.city);
+    const country=this.helpers.createCountry(todo.country);
+    const placeConteiner=this.helpers.createPlaceCountry([title, country]);
+    const image=this.helpers.createImage(todo.img);
+    const degrees=this.helpers.createDegrees(todo.temp);
+    const imageConteiner=this.helpers.createImageConteiner([image, degrees]);
+    const descr=this.helpers.createDescr(todo.newDescr);
+    return this.helpers.createTodoItem([date, placeConteiner, imageConteiner, descr]);
+    
+  }
+
+  createLiElement(todo){
+    const date=this.helpers.createLiDate(todo.date);
+    const temp=this.helpers.createDegrees(todo.temp);
+    const descr=this.helpers.createDescr(todo.newDescr);
+    return this.helpers.createLi([date, temp, descr]);
+  }
+
+  sendTitle(event){
     event.preventDefault();
     const title=this.input.value;
     if (title.trim() === '') {
@@ -52,26 +85,7 @@ class View extends EventEmitter{
 
       return;
     }
-    console.log(title);
-
-    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${title}&appid=870636f0f5cfc9e6ec4e9365513f649d&units=metric`)
-    .then(res=>res.json())
-    .then(data=>{
-      console.log(data);
-      const date=new Date(Date.now());
-      const city=data.name;
-      const country=data.sys.country;
-      const img=data.weather[0].icon;
-      const temp=data.main.temp;
-      const tempLike=data.main.feels_like;
-      const descr=data.weather[0].description;
-      const newDescr=descr[0].toUpperCase()+descr.slice(1);
-      const wind=data.wind.deg;
-      const speedOfWind=data.wind.speed;
-      const humidity=data.main.humidity;
-      const pressure=data.main.pressure;
-      this.emit('add', [date, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]);
-    })
-
+    
+    this.emit('send', title);
   }
 }

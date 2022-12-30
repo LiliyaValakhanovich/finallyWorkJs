@@ -1,7 +1,10 @@
-const model=new Model();
+const todo=StorageHelper.getItem('todo');
+
+const model=new Model(todo || []);
+model.on('change', (todo)=>{StorageHelper.setItem('todo', todo)});
+
 const view=new View(new DomHelper);
 const controller=new Controller(model, view);
-
 controller.init();
 
 

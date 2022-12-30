@@ -1,16 +1,25 @@
 class DomHelper {
   createDate(date) {
+    console.log(date);
     const newdate=date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear() +' '+date.getHours()+':'+date.getMinutes();
     return this.createElement({
-      tag: 'div',
+      tag: 'p',
       classList: ['date'],
       textContent: `${newdate}`,
     });
   }
 
+  createLiDate(date) {
+    return this.createElement({
+      tag: 'p',
+      classList: ['li_date'],
+      textContent: `${date}`,
+    });
+  }
+
   createTitle(city) {
     return this.createElement({
-      tag: 'h2',
+      tag: 'p',
       classList: ['city'],
       textContent: `${city},`
     });
@@ -18,7 +27,7 @@ class DomHelper {
 
   createCountry(country) {
     return this.createElement({
-      tag: 'h2',
+      tag: 'p',
       classList: ['city'],
       textContent: `${country}`
     });
@@ -112,6 +121,25 @@ class DomHelper {
       children,
       childrenAction: 'append',
     });
+  }
+  
+  createLi(children){
+    return this.createElement({
+      tag: 'li',
+      classList: ['list_item'],
+      children,
+      childrenAction: 'append',
+    });
+
+  }
+
+  createTodoItem(children){
+    return this.createElement({
+      tag: 'li',
+      classList: ['todo_item', 'd-flex', 'justify-content-around', 'align-items-end'],
+      children,
+      childrenAction: 'append',
+    })
   }
 
   
