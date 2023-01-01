@@ -11,9 +11,9 @@ class StorageHelper{
   } 
 
   static setItem(key, value){
-    while(localStorage.length<11){
+     
+      
     localStorage.setItem(key, JSON.stringify(value));
-    }
   }
-
+  
 } 

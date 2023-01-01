@@ -1,7 +1,7 @@
 class Model extends EventEmitter{
-  constructor(todo=[]){
+  constructor(todos={}){
     super();
-    this.todos=todo;
+    this.todos=todos ;
   }
 
   addTitle(title){
@@ -11,7 +11,8 @@ class Model extends EventEmitter{
     .then(res=>res.json())
     .then(data=>{
       console.log(data);
-      const date=new Date(Date.now());
+      const date=new Date;
+      const now=date.toLocaleString();
       const city=data.name;
       const country=data.sys.country;
       const img=data.weather[0].icon;
@@ -23,7 +24,9 @@ class Model extends EventEmitter{
       const speedOfWind=data.wind.speed;
       const humidity=data.main.humidity;
       const pressure=data.main.pressure;
-      this.emit('add', [date, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]);
+      this.emit('add', [now, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]);
+
+     
     })
 
     /*fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${title}&appid=870636f0f5cfc9e6ec4e9365513f649d&units=metric`)
@@ -45,15 +48,26 @@ class Model extends EventEmitter{
   }
 
   addTodo(todo){
-    this.todos.push(todo);
-    
-     
-    return console.log(todo) ;
+    if(this.todos.length<10){
+      this.todos.push(todo);
+    } else if(this.todos.length>=10){
+      this.todos.shift();
+      this.todos.push(todo);
+      console.log(this.todos);
+    }
+    /*this.todos.push(todo);*/
+
+   this.emit('change', this.todos);
+
+    return todo;
   }
 
   addList(todo){
     console.log('modlist', todo);
     this.todos.push(todo);
+    
+    
+    
     return todo;
   }
 }

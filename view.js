@@ -15,18 +15,33 @@ class View extends EventEmitter{
   }
 
   show (todos){
-    todos.forEach(todo=>{
-      this.addTodo(todo);
-    }) 
+
+    if(todos.length<10){
+      todos.forEach(todo=>{
+      this.addTodo(todo); 
+      })
+    } else if(todos.length>=10){
+      todos.shift();
+      todos.forEach(todo=>{
+        this.addTodo(todo);
+      })
+    }
+
+     /* todos.forEach(todo=>{
+        this.addTodo(todo);
+        
+      })*/ 
   }
 
   addTodo(todo){
     console.log('vew', todo);
-    const element=this.createElement(todo);
+   
     const liElement=this.createTodoList(todo);
     console.log(liElement);
-    this.weather_current.append(element);
-    this.todo_list.append(liElement);
+  
+      this.todo_list.append(liElement);
+    
+    
     return todo;
   }
 
@@ -37,7 +52,7 @@ class View extends EventEmitter{
     return todo;
   }
 
-  createElement(todo){
+ /* createElement(todo){
     const date=this.helpers.createDate(todo.date);
     const title=this.helpers.createTitle(todo.city);
     const country=this.helpers.createCountry(todo.country);
@@ -51,14 +66,14 @@ class View extends EventEmitter{
     const pressure=this.helpers.createPressure(todo.pressure);
     /*const wind=this.helpers.createWind(todo.wind);
     const speedOfWind=this.helpers.createSpeed(todo.speedOfWind);
-    const humidity=this.helpers.createHumidity(todo.humidity);*/
+    const humidity=this.helpers.createHumidity(todo.humidity);
     const paramConteiner=this.helpers.createParamConteiner([pressure])
     return this.helpers.createConteiner([date, placeConteiner, imageConteiner, descrConteiner, paramConteiner]);
 
-  }
+  }*/
 
   createTodoList(todo){
-    const date=this.helpers.createDate(todo.date);
+    const date=this.helpers.createDate(todo.now);
     const title=this.helpers.createTitle(todo.city);
     const country=this.helpers.createCountry(todo.country);
     const placeConteiner=this.helpers.createPlaceCountry([title, country]);
