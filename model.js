@@ -7,7 +7,7 @@ class Model extends EventEmitter{
   addTitle(title){
     console.log('model',  title);
 
-    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${title}&appid=870636f0f5cfc9e6ec4e9365513f649d&units=metric`)
+    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${title}&lang=ru&d&units=metric`)
     .then(res=>res.json())
     .then(data=>{
       console.log(data);
@@ -25,7 +25,7 @@ class Model extends EventEmitter{
       const humidity=data.main.humidity;
       const pressure=data.main.pressure;
       this.emit('add', [now, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]);
-
+      this.emit('addCurrent',[now, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]);
      
     })
 
@@ -61,6 +61,8 @@ class Model extends EventEmitter{
 
     return todo;
   }
+
+  
 
   addList(todo){
     console.log('modlist', todo);
