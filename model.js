@@ -1,13 +1,14 @@
 class Model extends EventEmitter{
-  constructor(todos={}){
+  constructor(todos=[], curtodo=[]){
     super();
-    this.todos=todos ;
+    this.todos=todos;
+    this.curtodo=curtodo;
   }
 
   addTitle(title){
     console.log('model',  title);
 
-    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${title}&lang=ru&d&units=metric`)
+    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${title}&appid=&units=metric`)
     .then(res=>res.json())
     .then(data=>{
       console.log(data);
@@ -26,50 +27,54 @@ class Model extends EventEmitter{
       const pressure=data.main.pressure;
       this.emit('add', [now, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]);
       this.emit('addCurrent',[now, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]);
-     
     })
 
-    /*fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${title}&appid=870636f0f5cfc9e6ec4e9365513f649d&units=metric`)
+    fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${title}&cnt=2&appid=&units=metric`)
     .then(res=>res.json())
     .then(data=>{
       console.log(data);
       const listArray=data.list;
       console.log(listArray);
-      listArray.forEach(el=>console.log(el.main.temp ));
-      const date=listArray.dt_txt;
-      const temp=listArray.main.temp;
-      const descr=listArray.weather.description;
-      const newDescr=descr[0].toUpperCase()+descr.slice(1);
-      this.emit('addList', [date, temp, newDescr]);
-    })
-    */
-      
-    
+      listArray.forEach(el=>{
+        const date=el.dt_txt;
+        const temp=el.main.temp;
+        console.log(temp);
+        const descr=el.weather;
+        console.log(descr);
+        this.emit('addList', [date, temp, descr]);
+      })
+    })   
   }
 
   addTodo(todo){
-    if(this.todos.length<10){
+   if(this.todos.length<10){
       this.todos.push(todo);
     } else if(this.todos.length>=10){
       this.todos.shift();
       this.todos.push(todo);
       console.log(this.todos);
     }
-    /*this.todos.push(todo);*/
 
-   this.emit('change', this.todos);
-
-    return todo;
+    this.emit('change', this.todos);
+    return this.todos;
   }
 
-  
+  addCurrentTodo(curtodo){
+    console.log(curtodo);
+    console.log(this.curtodo);
+    
+    if (this.curtodo.length===0){
+      this.curtodo.push(curtodo);
+    } else{
+      this.curtodo.length=0;
+      curtodo.push(curtodo);
+      this.emit('change_current', curtodo);
+    }
+    return curtodo;
+  }
 
-  addList(todo){
-    console.log('modlist', todo);
-    this.todos.push(todo);
-    
-    
-    
-    return todo;
+  addList(curtodo){
+    curtodo.push(curtodo);
+    return curtodo;
   }
 }

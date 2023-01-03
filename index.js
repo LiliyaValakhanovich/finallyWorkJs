@@ -1,17 +1,9 @@
-const todo=StorageHelper.getItem('todo');
-
-const model=new Model(todo || []);
-model.on('change', (todo)=>{StorageHelper.setItem('todo', todo)});
-
-const view=new View(new DomHelper);
-const controller=new Controller(model, view);
-controller.init();
-
-
-
-
-
-
-/*fetch('http://api.openweathermap.org/data/2.5/weather?q=Minsk&appid=870636f0f5cfc9e6ec4e9365513f649d')
-  .then(res=>res.json())
-  .then(console.log)*/
+  const todos=StorageHelper.getItem('todos');
+  const curtodo=StorageHelper.getItem('key');
+  const model=new Model(todos ||[], curtodo || []);
+  console.log(curtodo);
+  model.on('change', (todos)=>StorageHelper.setItem('todos', todos));
+  model.on('change_current', (curtodo)=>StorageHelper.setItem('key', curtodo));
+  const view=new View(new DomHelper);
+  const controller=new Controller(model, view);
+  controller.init();

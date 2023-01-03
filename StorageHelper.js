@@ -6,13 +6,9 @@ class StorageHelper{
       return JSON.parse(value);
     }
     return null;
-  
-    
   } 
 
-  static setItem(key, value){
-     
-      
+  static setItem(key, value){  
     localStorage.setItem(key, JSON.stringify(value));
   }
   
