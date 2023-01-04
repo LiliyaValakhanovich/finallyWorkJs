@@ -36,7 +36,6 @@ class View extends EventEmitter{
      
       curtodo.lengths=[];
       this.addCurrentTodo(curtodo);
-      console.log(curtodo);
     }
   }
 
@@ -51,21 +50,15 @@ class View extends EventEmitter{
   }
 
   addTodo(todo){
-    console.log('vew', todo);
-   
     const liElement=this.createTodoList(todo);
-    console.log(liElement);
     this.todo_list.append(liElement);
     return todo;
   }
 
   addList(listtodo){
-    console.log(listtodo);
-    console.log(listtodo.listArray);
     listtodo.listArray.forEach(el=>{
-    const liItem=this.createLiElement(el);
-    this.weather_list.append(liItem);
-   
+      const liItem=this.createLiElement(el);
+      this.weather_list.append(liItem);
     });
   }
 

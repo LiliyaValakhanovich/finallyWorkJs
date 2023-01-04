@@ -7,10 +7,8 @@ class Model extends EventEmitter{
   }
 
   async addTitle(title){
-    console.log('model',  title);
-
-    let res=await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${title}&appid=&units=metric`)
-    res=>res.json();
+    let res=await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${title}&appid=870636f0f5cfc9e6ec4e9365513f649d&units=metric`)
+    res=res.json();
     res.then(data=>{
       console.log(data);
       const date=new Date;
@@ -30,15 +28,11 @@ class Model extends EventEmitter{
       this.emit('addCurrent',[now, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]);
     })
 
-    let response=await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${title}&cnt=10&appid=&units=metric`)
-    response=>response.json();
+    let response=await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${title}&cnt=10&appid=870636f0f5cfc9e6ec4e9365513f649d&units=metric`)
+    response=response.json();
     response.then(data=>{
-      console.log(data);
       const listArray=data.list;
-      console.log(listArray);
-     
       this.emit('addList', listArray);
-      
     })   
   }
 
@@ -48,33 +42,24 @@ class Model extends EventEmitter{
     } else if(this.todos.length>=10){
       this.todos.shift();
       this.todos.push(todo);
-      console.log(this.todos);
     }
-
     this.emit('change', this.todos);
     return this.todos;
   }
 
   addCurrentTodo(curtodo){
-    console.log(curtodo);
-    console.log(this.curtodo);
-    
     if (this.curtodo.length===0){
       this.curtodo+=curtodo;
       this.emit('change_current', curtodo);
     } else{
       this.curtodo.length=0;
       this.curtodo+=curtodo;
-      console.log(this.curtodo);
       this.emit('change_current', curtodo);
     }
-
-    
     return curtodo;
   }
 
   addList(listtodo){
-    
    this.listtodo+=listtodo;
     return listtodo;
   }
