@@ -9,7 +9,7 @@ class Model extends EventEmitter{
   async addTitle(title){
     console.log('model',  title);
 
-    let response=await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${title}&appid=870636f0f5cfc9e6ec4e9365513f649d&units=metric`)
+    let response=await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${title}&appid=&units=metric`)
     response=response.json();
     response.then(data=>{
       console.log(data);
@@ -30,7 +30,7 @@ class Model extends EventEmitter{
       this.emit('addCurrent',[now, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]);
     })
 
-    let res= await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${title}&cnt=10&appid=870636f0f5cfc9e6ec4e9365513f649d&units=metric`)
+    let res= await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${title}&cnt=10&appid=&units=metric`)
     res=res.json();
     res.then(data=>{
       console.log(data);
