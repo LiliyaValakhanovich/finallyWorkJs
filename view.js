@@ -34,10 +34,14 @@ class View extends EventEmitter{
       this.addCurrentTodo(curtodo);
     } else{
      
-    
+      curtodo.lengths=[];
       this.addCurrentTodo(curtodo);
       console.log(curtodo);
     }
+  }
+
+  showForecast(listtodo){
+    this.addList(listtodo);
   }
 
   addCurrentTodo(curtodo){
@@ -55,11 +59,14 @@ class View extends EventEmitter{
     return todo;
   }
 
-  addList(curtodo){
-    console.log('viewList', curtodo);
-    const liItem=this.createLiElement(curtodo);
+  addList(listtodo){
+    console.log(listtodo);
+    console.log(listtodo.listArray);
+    listtodo.listArray.forEach(el=>{
+    const liItem=this.createLiElement(el);
     this.weather_list.append(liItem);
-    return curtodo;
+   
+    });
   }
 
   createElement(curtodo){
@@ -103,10 +110,11 @@ class View extends EventEmitter{
     return this.helpers.createTodoItem([date, placeConteiner, imageConteiner, descr]); 
   }
 
-  createLiElement(curtodo){
-    const date=this.helpers.createLiDate(curtodo.date);
-    const temp=this.helpers.createDegrees(curtodo.temp);
-    const descr=this.helpers.createDescr(curtodo.descr);
+  createLiElement(el){
+    const date=this.helpers.createLiDate(el);
+    const temp=this.helpers.createLitemp(el);
+    const descr=this.helpers.createLiDescr(el);
+    
     return this.helpers.createLi([date, temp, descr]);
   }
 

@@ -22,10 +22,11 @@
 }
 
 .form{
-  width: 50%;
   padding:10px 0;
   margin: 0 auto;
   margin-bottom: 20px;
+  flex-wrap: nowrap;
+  justify-content: center;
 }
 
 .footer{
@@ -36,7 +37,7 @@
 }
 
 .executor, .date{
-font-size: 18px;
+  font-size: 18px;
 }
 
 .weather_conteiner{
@@ -44,7 +45,7 @@ font-size: 18px;
 }
 
 .weather_current, .weather_fivedays{
-width: 40%;
+  width: 40%;
 }
 
 .city{
@@ -68,6 +69,11 @@ width: 40%;
   list-style-type: none;
 }
 
+.li_item{
+  gap:5px;
+  flex-wrap: nowrap;
+}
+
 .speedwind{
   padding-right: 5px;
 }
@@ -75,10 +81,24 @@ width: 40%;
 .todo_item{
   border: 1px solid white;
   border-radius: 5px;
-  box-shadow: 5px 5px 5px rgb(97, 121, 143);
+  box-shadow: 5px 5px 5px rgb(97, 121, 143); 
 }
 
 .todo_item:hover{
   transform:scale(1.1,1.1);
 }
+
+@media  screen and (max-width: 768px){
+  .weather_fivedays{
+  display:none;
+  }
+  .weather_current{
+    width:100%;
+  }
+  .descr_weather{
+    display: none;
+  }
+}
+  
+
 

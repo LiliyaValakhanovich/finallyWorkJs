@@ -22,18 +22,22 @@
 
     <main class="main">
       <form class="form input-group">
-        <input type="text" class="form-input" > 
-        <button class="btn btn-primary input-group-text" type="submit">Search</button>
+        <label>
+          <input type="text" class="form-input form-control" > 
+        </label>
+        <button class="btn btn-form btn-primary " type="submit">Search</button>
       </form>
       <div class="weather_conteiner d-flex justify-content-center">
         <div class="weather_current"></div>
 
         <div class="weather_fivedays">
+          <h5>5-days/3 hours forecast</h5>
           <ul class="weather_list"></ul>
         </div>
 
       </div>
       <div class="todo_list">
+        <h5>Last requests</h5>
         <ul class="todo_list_history"></ul>
       </div>
     </main>

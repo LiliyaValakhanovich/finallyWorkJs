@@ -1,16 +1,17 @@
 class Model extends EventEmitter{
-  constructor(todos=[], curtodo=[]){
+  constructor(todos=[], curtodo=[], listtodo=[]){
     super();
     this.todos=todos;
     this.curtodo=curtodo;
+    this.listtodo=listtodo;
   }
 
-  addTitle(title){
+  async addTitle(title){
     console.log('model',  title);
 
-    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${title}&appid=&units=metric`)
-    .then(res=>res.json())
-    .then(data=>{
+    let response=await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${title}&appid=870636f0f5cfc9e6ec4e9365513f649d&units=metric`)
+    response=response.json();
+    response.then(data=>{
       console.log(data);
       const date=new Date;
       const now=date.toLocaleString();
@@ -29,20 +30,15 @@ class Model extends EventEmitter{
       this.emit('addCurrent',[now, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]);
     })
 
-    fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${title}&cnt=2&appid=&units=metric`)
-    .then(res=>res.json())
-    .then(data=>{
+    let res= await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${title}&cnt=10&appid=870636f0f5cfc9e6ec4e9365513f649d&units=metric`)
+    res=res.json();
+    res.then(data=>{
       console.log(data);
       const listArray=data.list;
       console.log(listArray);
-      listArray.forEach(el=>{
-        const date=el.dt_txt;
-        const temp=el.main.temp;
-        console.log(temp);
-        const descr=el.weather;
-        console.log(descr);
-        this.emit('addList', [date, temp, descr]);
-      })
+     
+      this.emit('addList', listArray);
+      
     })   
   }
 
@@ -64,17 +60,22 @@ class Model extends EventEmitter{
     console.log(this.curtodo);
     
     if (this.curtodo.length===0){
-      this.curtodo.push(curtodo);
+      this.curtodo+=curtodo;
+      this.emit('change_current', curtodo);
     } else{
       this.curtodo.length=0;
-      curtodo.push(curtodo);
+      this.curtodo+=curtodo;
+      console.log(this.curtodo);
       this.emit('change_current', curtodo);
     }
+
+    
     return curtodo;
   }
 
-  addList(curtodo){
-    curtodo.push(curtodo);
-    return curtodo;
+  addList(listtodo){
+    
+   this.listtodo+=listtodo;
+    return listtodo;
   }
 }

@@ -7,11 +7,28 @@ class DomHelper {
       textContent: `${now}`,
     });
   }
-  createLiDate(date) {
+  createLiDate(el) {
     return this.createElement({
       tag: 'p',
       classList: ['li_date'],
-      textContent: `${date}`,
+      textContent: `${el.dt_txt}`,
+    });
+  }
+
+  createLitemp(el) {
+    const integerTemp=Math.round(el.main.temp);
+    return this.createElement({
+      tag: 'p',
+      classList: ['li_temp'],
+      textContent: `${integerTemp}\u00B0C`,
+    });
+  }
+
+  createLiDescr(el) {
+    return this.createElement({
+      tag: 'p',
+      classList: ['li_descr'],
+      textContent: `${el.weather[0].description}`,
     });
   }
 
@@ -176,7 +193,7 @@ class DomHelper {
     return this.createElement({
       tag: 'p',
       classList: ['degrees'],
-      textContent:`${integerTemp}C`, 
+      textContent:`${integerTemp}\u00B0 C`, 
     });
   }
 
@@ -185,7 +202,7 @@ class DomHelper {
     return this.createElement({
       tag: 'p',
       classList: ['temp_like'],
-      textContent:`Feels like: ${integer} C.` 
+      textContent:`Feels like: ${integer}\u00B0C.` 
     });
   }
 
@@ -327,7 +344,7 @@ class DomHelper {
   createLi(children){
     return this.createElement({
       tag: 'li',
-      classList: ['d-flex', 'justify-content-between'],
+      classList: ['d-flex', 'li_item', 'justify-content-between'],
       children,
       childrenAction: 'append',
     });

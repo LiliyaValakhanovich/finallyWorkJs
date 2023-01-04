@@ -12,6 +12,7 @@ class Controller {
   init(){
     this.view.show(this.model.todos);
     this.view.showCurrent(this.model.curtodo);
+    this.view.showForecast(this.model.listtodo);
   }
 
   addTitle(title){
@@ -55,12 +56,10 @@ class Controller {
     this.model.addCurrentTodo(curtodo);
   }
 
-  addList([date, temp, descr]){
-    const curtodo=this.view.addList({
-      date,
-      temp,
-      descr,
+  addList(listArray){
+    const listtodo=this.view.addList({
+      listArray,
     })
-    this.model.addList(curtodo);
+    this.model.addList(listtodo);
   }
 }
