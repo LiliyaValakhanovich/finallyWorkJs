@@ -10,10 +10,12 @@ class View extends EventEmitter{
     this.todo_list=document.querySelector('.todo_list_history');
 
     this.sendTitle=this.sendTitle.bind(this);
-    this.showCurrentWeather=this.showCurrentWeather.bind(this);
+    this.delete=this.delete.bind(this);
+    this.deleteItem=this.deleteItem.bind(this);
+    this.showWeather=this.showWeather.bind(this);
 
     this.form.addEventListener('submit', this.sendTitle);
-    this.todo_list.addEventListener('click', this.showCurrentWeather);
+    
   }
 
   show (todos){
@@ -39,13 +41,15 @@ class View extends EventEmitter{
     }
   }
 
-  showForecast(listtodo){
-    this.addList(listtodo);
+  showForecast(listArray){
+    this.addList(listArray);
   }
 
   addCurrentTodo(curtodo){
+    
     const currentEl=this.createElement(curtodo);
-    this.weather_current.append(currentEl);
+    console.log(currentEl);
+    this.weather_current.replaceChildren (currentEl);
     return curtodo;
   }
 
@@ -55,11 +59,19 @@ class View extends EventEmitter{
     return todo;
   }
 
-  addList(listtodo){
-    listtodo.listArray.forEach(el=>{
+  addList(listArray){
+    
+    listArray.forEach(el=>{
       const liItem=this.createLiElement(el);
       this.weather_list.append(liItem);
-    });
+      return console.log(liItem);
+    })
+    
+   /* listtodo.listArray.forEach((el)=>{
+      console.log(el);
+      const liItem=this.createLiElement(el);
+      this.weather_list.append(liItem);
+   });*/
   }
 
   createElement(curtodo){
@@ -91,7 +103,9 @@ class View extends EventEmitter{
 
   }
 
+
   createTodoList(todo){
+    console.log(todo.id);
     const date=this.helpers.createDate(todo.now);
     const title=this.helpers.createTitle(todo.city);
     const country=this.helpers.createCountry(todo.country);
@@ -100,13 +114,15 @@ class View extends EventEmitter{
     const degrees=this.helpers.createDegrees(todo.temp);
     const imageConteiner=this.helpers.createImageConteiner([image, degrees]);
     const descr=this.helpers.createDescr(todo.newDescr);
-    return this.helpers.createTodoItem([date, placeConteiner, imageConteiner, descr]); 
+    const buttonShow=this.helpers.createButtonShow([{event: 'click', handler: this.showWeather}]);
+    const button=this.helpers.createButton([{event: 'click', handler: this.delete}]);
+    return this.helpers.createTodoItem([{prop: 'data-id', value: `${todo.id}`}],[date, placeConteiner, imageConteiner, descr, buttonShow, button]); 
   }
 
   createLiElement(el){
-    const date=this.helpers.createLiDate(el);
-    const temp=this.helpers.createLitemp(el);
-    const descr=this.helpers.createLiDescr(el);
+    const date=this.helpers.createLiDate(el.dt_txt);
+    const temp=this.helpers.createLitemp(el.main.temp);
+    const descr=this.helpers.createLiDescr(el.weather[0].description);
     
     return this.helpers.createLi([date, temp, descr]);
   }
@@ -121,9 +137,10 @@ class View extends EventEmitter{
     }
     this.emit('send', title);
     this.input.value='';
+    
   }
 
-  showCurrentWeather(event){
+  showWeather(event){
     console.log(event.target);
     const targetEl=event.target.closest('.todo_item');
     const elTitle=targetEl.querySelector('.city');
@@ -131,4 +148,23 @@ class View extends EventEmitter{
 
     this.emit('send', title);
   }
+
+  delete(event){
+    const item=event.target.closest('.todo_item');
+    console.log(item); 
+    const id=item.dataset.id;
+    console.log(id);
+
+    this.emit('delete', id);
+  }
+
+  deleteItem(id){
+    const item=this.this.todo_list.querySelector(`[data-id="${id}"]`);
+    
+    item.remove();
+  }
+
+  /*#findItem(id){
+    return this.todo_list.querySelector(`[data-id="${id}"]`)
+  }*/
 }

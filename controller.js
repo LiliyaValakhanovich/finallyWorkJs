@@ -4,6 +4,7 @@ class Controller {
     this.view=view;
 
     this.view.on('send', this.addTitle.bind(this));
+    this.view.on('delete', this.deleteItem.bind(this));
     this.model.on('add', this.addTodo.bind(this));
     this.model.on('addCurrent', this.addCurrentTodo.bind(this));
     this.model.on('addList', this.addList.bind(this));
@@ -15,15 +16,16 @@ class Controller {
     this.view.showForecast(this.model.listtodo);
   }
 
-  addTitle(title){
+   async addTitle(title){
     console.log('controller', title);
-    this.model.addTitle(
+   const res= await this.model.addTitle(
       title,
     )
   }
 
-  addTodo([now, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]){
-    const todo=this.view.addTodo({
+  async addTodo([now, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]){
+    const todo= await this.view.addTodo({
+      id:Date.now(),
       now,
       city,
       country,
@@ -39,8 +41,8 @@ class Controller {
      this.model.addTodo(todo);
   }
 
-  addCurrentTodo([now, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]){
-    const curtodo=this.view.addCurrentTodo({
+  async addCurrentTodo([now, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]){
+    const curtodo= await this.view.addCurrentTodo({
       now,
       city,
       country,
@@ -56,10 +58,15 @@ class Controller {
     this.model.addCurrentTodo(curtodo);
   }
 
-  addList(listArray){
-    const listtodo=this.view.addList({
+  async  addList(listArray){
+    await this.view.addList({
       listArray,
     })
-    this.model.addList(listtodo);
+    this.model.addList(listArray);
+  }
+
+  deleteItem(id){
+    this.model.deleteItem(id);
+    this.view.deleteItem(id);  
   }
 }
