@@ -7,16 +7,18 @@ class DomHelper {
       textContent: `${now}`,
     });
   }
-  createLiDate(el) {
+
+
+  createLiDate(date) {
     return this.createElement({
       tag: 'p',
       classList: ['li_date'],
-      textContent: `${el.dt_txt}`,
+      textContent: `${date}`,
     });
   }
 
-  createLitemp(el) {
-    const integerTemp=Math.round(el.main.temp);
+  createLitemp(temp) {
+    const integerTemp=Math.round(temp);
     return this.createElement({
       tag: 'p',
       classList: ['li_temp'],
@@ -24,11 +26,11 @@ class DomHelper {
     });
   }
 
-  createLiDescr(el) {
+  createLiDescr(descr) {
     return this.createElement({
       tag: 'p',
       classList: ['li_descr'],
-      textContent: `${el.weather[0].description}`,
+      textContent: `${descr}`,
     });
   }
 
@@ -340,30 +342,49 @@ class DomHelper {
       childrenAction: 'append',
     });
   }
+
+  createlistTitle(){
+    return this.createElement({
+      tag: 'h5',
+      classList: ['list_title'],
+      textContent: '5 day/3 hour forecast',
+    })
+  }
   
   createLi(children){
     return this.createElement({
       tag: 'li',
-      classList: ['d-flex', 'li_item', 'justify-content-between'],
+      classList: ['d-flex', 'li_item', 'justify-content-between', 'align-items-center'],
       children,
       childrenAction: 'append',
     });
   }
 
-  createTodoItem(children){
+  createTodoItem(attributes, children){
     return this.createElement({
       tag: 'li',
       classList: ['todo_item', 'd-flex', 'justify-content-around', 'align-items-end'],
+      attributes,
       children,
       childrenAction: 'append',
     })
   }
 
-  createButton(){
+  createButton(handlers){
     return this.createElement({
       tag: 'button',
-      classList: ['btn', 'btn-secondary'],
+      classList: ['btn', 'btn-outline-secondary'],
       textContent: 'delete',
+      handlers,
+    })
+  }
+
+  createButtonShow(handlers){
+    return this.createElement({
+      tag: 'button',
+      classList: ['btn', 'btn-outline-primary'],
+      textContent: 'show',
+      handlers,
     })
   }
 

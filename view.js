@@ -35,14 +35,9 @@ class View extends EventEmitter{
     if(curtodo.length===0){
       this.addCurrentTodo(curtodo);
     } else{
-     
       curtodo.lengths=[];
       this.addCurrentTodo(curtodo);
     }
-  }
-
-  showForecast(listArray){
-    this.addList(listArray);
   }
 
   addCurrentTodo(curtodo){
@@ -60,21 +55,20 @@ class View extends EventEmitter{
   }
 
   addList(listArray){
-    
     listArray.forEach(el=>{
-      const liItem=this.createLiElement(el);
-      this.weather_list.append(liItem);
-      return console.log(liItem);
-    })
-    
-   /* listtodo.listArray.forEach((el)=>{
+      el.dt_txt=el.dt_txt.split(' ');
+      console.log(el.dt_txt); 
       console.log(el);
-      const liItem=this.createLiElement(el);
-      this.weather_list.append(liItem);
-   });*/
+      if(el.dt % 86400===0){
+        const liItem=this.createLiElement(el);
+        console.log(liItem);
+        this.weather_list.append(liItem);
+      } return 
+    })
   }
 
   createElement(curtodo){
+    console.log(curtodo);
     const date=this.helpers.createDate(curtodo.now);
     const title=this.helpers.createTitle(curtodo.city);
     const country=this.helpers.createCountry(curtodo.country);
@@ -100,7 +94,6 @@ class View extends EventEmitter{
 
     const divDescr=this.helpers.createDivDescr([imageConteiner, descrConteiner, ulDescr]);
     return this.helpers.createConteiner([divtitle, divDescr]);
-
   }
 
 
@@ -116,15 +109,14 @@ class View extends EventEmitter{
     const descr=this.helpers.createDescr(todo.newDescr);
     const buttonShow=this.helpers.createButtonShow([{event: 'click', handler: this.showWeather}]);
     const button=this.helpers.createButton([{event: 'click', handler: this.delete}]);
-    return this.helpers.createTodoItem([{prop: 'data-id', value: `${todo.id}`}],[date, placeConteiner, imageConteiner, descr, buttonShow, button]); 
+    return this.helpers.createTodoItem([{prop: 'data-id', value: todo.id}],[date, placeConteiner, imageConteiner, descr, buttonShow, button]); 
   }
 
   createLiElement(el){
-    const date=this.helpers.createLiDate(el.dt_txt);
+    const date=this.helpers.createLiDate(el.dt_txt[0]);
+    const image=this.helpers.createImage(el.weather[0].icon);
     const temp=this.helpers.createLitemp(el.main.temp);
-    const descr=this.helpers.createLiDescr(el.weather[0].description);
-    
-    return this.helpers.createLi([date, temp, descr]);
+    return this.helpers.createLi([date, image, temp]);
   }
 
   sendTitle(event){
@@ -132,7 +124,6 @@ class View extends EventEmitter{
     const title=this.input.value;
     if (title.trim() === '') {
       alert('You need to enter valid todo title!');
-
       return;
     }
     this.emit('send', title);
@@ -145,26 +136,19 @@ class View extends EventEmitter{
     const targetEl=event.target.closest('.todo_item');
     const elTitle=targetEl.querySelector('.city');
     const title=elTitle.textContent;
-
     this.emit('send', title);
   }
 
   delete(event){
     const item=event.target.closest('.todo_item');
     console.log(item); 
-    const id=item.dataset.id;
-    console.log(id);
-
+    const id=+item.dataset.id;
     this.emit('delete', id);
   }
 
   deleteItem(id){
-    const item=this.this.todo_list.querySelector(`[data-id="${id}"]`);
-    
+    const item=this.todo_list.querySelector(`[data-id="${id}"]`);
+    console.log(item);
     item.remove();
   }
-
-  /*#findItem(id){
-    return this.todo_list.querySelector(`[data-id="${id}"]`)
-  }*/
 }

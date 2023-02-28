@@ -13,12 +13,11 @@ class Controller {
   init(){
     this.view.show(this.model.todos);
     this.view.showCurrent(this.model.curtodo);
-    this.view.showForecast(this.model.listtodo);
   }
 
-   async addTitle(title){
+  async addTitle(title){
     console.log('controller', title);
-   const res= await this.model.addTitle(
+    const res= await this.model.addTitle(
       title,
     )
   }
@@ -59,9 +58,10 @@ class Controller {
   }
 
   async  addList(listArray){
-    await this.view.addList({
+    console.log('cont',listArray);
+    await this.view.addList(
       listArray,
-    })
+    )
     this.model.addList(listArray);
   }
 

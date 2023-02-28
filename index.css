@@ -6,6 +6,7 @@
 
 .conteiner{
   height: 100vh;
+  position: relative;
 }
 
 .header{
@@ -14,6 +15,9 @@
   padding: 10px;
   background-image: url(pictures/sky.jpg);
   background-size: cover;
+  position:sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .main{
@@ -74,19 +78,29 @@
   flex-wrap: nowrap;
 }
 
+.li_date, .li_temp{
+ margin:0;
+}
+
 .speedwind{
   padding-right: 5px;
+}
+
+.title{
+  display: none;
 }
 
 .todo_item{
   border: 1px solid white;
   border-radius: 5px;
   box-shadow: 5px 5px 5px rgb(97, 121, 143); 
+  padding: 5px;
 }
 
 .todo_item:hover{
   transform:scale(1.1,1.1);
 }
+
 
 @media  screen and (max-width: 768px){
   .weather_fivedays{
@@ -96,6 +110,9 @@
     width:100%;
   }
   .descr_weather{
+    display: none;
+  }
+  .date{
     display: none;
   }
 }

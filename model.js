@@ -1,17 +1,16 @@
 class Model extends EventEmitter{
-  constructor(todos=[], curtodo=[], listtodo=[]){
+  constructor(todos=[], curtodo=[], listArray=[]){
     super();
     this.todos=todos;
     this.curtodo=curtodo;
-    this.listtodo=listtodo;
+    this.listArray=listArray;
   }
 
   async addTitle(title){
     let res=await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${title}&appid=870636f0f5cfc9e6ec4e9365513f649d&units=metric`)
     res=res.json();
     res.then(data=>{
-      console.log(data);
-      const date=new Date;
+      const date=new Date();
       const now=date.toLocaleString();
       const city=data.name;
       const country=data.sys.country;
@@ -28,15 +27,15 @@ class Model extends EventEmitter{
       this.emit('addCurrent',[now, city, country, img, temp, tempLike,  newDescr, wind, speedOfWind, humidity, pressure]);
     })
 
-    let response=await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${title}&cnt=10&appid=870636f0f5cfc9e6ec4e9365513f649d&units=metric`)
+    let response=await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${title}&appid=870636f0f5cfc9e6ec4e9365513f649d&units=metric`)
     response=response.json();
     response.then(data=>{
-      const listArray=data.list;
+      const listArray=data.list;  
       this.emit('addList', listArray);
     })   
   }
 
-  addTodo(todo){
+  async addTodo(todo){
    if(this.todos.length<10){
       this.todos.push(todo);
     } else if(this.todos.length>=10){
@@ -47,20 +46,32 @@ class Model extends EventEmitter{
     return this.todos;
   }
 
-  addCurrentTodo(curtodo){
+  async addCurrentTodo(curtodo){
     if (this.curtodo.length===0){
       this.curtodo+=curtodo;
       this.emit('change_current', curtodo);
     } else{
-      this.curtodo.length=0;
+      this.curtodo=[];
       this.curtodo+=curtodo;
       this.emit('change_current', curtodo);
     }
     return curtodo;
   }
 
-  addList(listtodo){
-   this.listtodo+=listtodo;
-    return listtodo;
+  async addList(listArray){ 
+    if (this.listArray===0){
+      this.listArray+=listArray;
+      this.emit('change_list', listArray);
+    } else{
+      this.listArray=[] ;
+      this.listArray+=listArray;
+      this.emit('change_list', listArray);
+    }
+    return listArray;
+  }
+
+  async deleteItem(id){
+    this.todos=this.todos.filter(todo=>todo.id!==id);
+    this.emit('change', this.todos);
   }
 }
