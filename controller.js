@@ -4,7 +4,7 @@ class Controller {
     this.view=view;
 
     this.view.on('send', this.addTitle.bind(this));
-    this.view.on('delete', this.deleteItem.bind(this));
+    this.view.on('delete ', this.deleteItem.bind(this));
     this.model.on('add', this.addTodo.bind(this));
     this.model.on('addCurrent', this.addCurrentTodo.bind(this));
     this.model.on('addList', this.addList.bind(this));

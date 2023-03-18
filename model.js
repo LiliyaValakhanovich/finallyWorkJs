@@ -6,7 +6,7 @@ class Model extends EventEmitter{
     this.listArray=listArray;
   }
 
-  async addTitle(title){
+    async addTitle(title){
     let res=await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${title}&appid=870636f0f5cfc9e6ec4e9365513f649d&units=metric`)
     res=res.json();
     res.then(data=>{
@@ -38,12 +38,15 @@ class Model extends EventEmitter{
   async addTodo(todo){
    if(this.todos.length<10){
       this.todos.push(todo);
+      this.emit('change', this.todos);
+      return this.todos;
     } else if(this.todos.length>=10){
       this.todos.shift();
       this.todos.push(todo);
+      this.emit('change', this.todos);
+      return this.todos;
     }
-    this.emit('change', this.todos);
-    return this.todos;
+    
   }
 
   async addCurrentTodo(curtodo){
@@ -55,16 +58,18 @@ class Model extends EventEmitter{
       this.curtodo+=curtodo;
       this.emit('change_current', curtodo);
     }
-    return curtodo;
+    return(curtodo);
   }
 
   async addList(listArray){ 
-    if (this.listArray===0){
+    if (this.listArray.length===0){
       this.listArray+=listArray;
       this.emit('change_list', listArray);
     } else{
-      this.listArray=[] ;
+       this.emit('remove_list',listArray);
+      console.log(this.listArray);
       this.listArray+=listArray;
+      console.log(this.listArray);
       this.emit('change_list', listArray);
     }
     return listArray;

@@ -17,18 +17,25 @@ class View extends EventEmitter{
     this.form.addEventListener('submit', this.sendTitle);
     
   }
-
+  
   show (todos){
-    if(todos.length<10){
+    console.log(todos);
+    /*if(todos.length<10){
       todos.forEach(todo=>{
       this.addTodo(todo); 
       })
     } else if(todos.length>=10){
       todos.shift();
+      console.log(todos);
       todos.forEach(todo=>{
         this.addTodo(todo);
+        
       })
-    }  
+      console.log(todos);
+    }  */
+    todos.forEach(todo=>{
+      this.addTodo(todo);  
+      })
   }
 
   showCurrent(curtodo){
@@ -41,10 +48,9 @@ class View extends EventEmitter{
   }
 
   addCurrentTodo(curtodo){
-    
     const currentEl=this.createElement(curtodo);
     console.log(currentEl);
-    this.weather_current.replaceChildren (currentEl);
+    this.weather_current.replaceChildren(currentEl);
     return curtodo;
   }
 
@@ -95,7 +101,6 @@ class View extends EventEmitter{
     const divDescr=this.helpers.createDivDescr([imageConteiner, descrConteiner, ulDescr]);
     return this.helpers.createConteiner([divtitle, divDescr]);
   }
-
 
   createTodoList(todo){
     console.log(todo.id);

@@ -6,6 +6,7 @@ const runApp = async () => {
   model.on('change', (todos)=>StorageHelper.setItem('todos', todos));
   model.on('change_current', (curtodo)=>StorageHelper.setItem('key', curtodo));
   model.on('change_list', (listArray)=>StorageHelper.setItem('list', listArray));
+  model.on('remove_list', (listArray)=>StorageHelper.removeItem('list', listArray) )
   const view=new View(new DomHelper);
   const controller=new Controller(model, view);
   controller.init();
